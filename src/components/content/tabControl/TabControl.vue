@@ -1,0 +1,50 @@
+<template>
+  <div class="tabControl">
+
+    <div v-for="(title,index) of titles" @click="handClick(index)"
+    :class="{active:index === curIndex}">
+      <a >{{title}}</a>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name:'TabControl',
+    data(){
+      return{
+        curIndex:0,
+        isActive:false
+      }
+    },
+    methods:{
+      handClick(index){
+        this.curIndex = index
+        console.log(this.curIndex)
+
+      }
+    },
+    props:{
+      titles:{
+        type:Array,
+        default:[]
+      }
+    }
+  }
+</script>
+
+<style>
+  .tabControl{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px 0px;
+    position: sticky;
+    top: 44px;
+    background-color: #fff;
+  }
+  .active a{
+    color: var(--color-tint);
+    padding-bottom: 5px;
+    border-bottom: 3px solid var(--color-tint);
+  }
+</style>

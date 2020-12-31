@@ -1,11 +1,38 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+const Home = ()=>import('views/home/Home')
+const FenLei = ()=>import('views/fenlei/FenLei')
+const GouWuChe = ()=>import('views/gouwuche/GouWuChe')
+const Profile = ()=>import('views/dangan/Profile')
 
 Vue.use(VueRouter)
 
 const routes = [
-
+	{
+				path:'',
+				redirect:'/home'
+			},
+			{
+				path: '/home',
+				name: 'Home',
+				component: Home
+			},
+			{
+				path: '/fenlei',
+				name: 'FenLei',
+				component: FenLei
+			},
+			{
+				path: '/gouwuche',
+				name: 'GouWuChe',
+				component: GouWuChe
+			},
+			{
+				path: '/profile',
+				name: 'Profile',
+				component: Profile
+			},
 ]
 
 const router = new VueRouter({
