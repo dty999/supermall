@@ -21,7 +21,7 @@
       handClick(index){
         this.curIndex = index
         console.log(this.curIndex)
-
+        this.$emit('tabClick',index)
       }
     },
     props:{
@@ -41,10 +41,12 @@
     position: sticky;
     top: 44px;
     background-color: #fff;
+        z-index: 9;
   }
   .active a{
     color: var(--color-tint);
     padding-bottom: 5px;
     border-bottom: 3px solid var(--color-tint);
+
   }
 </style>

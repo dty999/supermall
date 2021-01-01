@@ -1,5 +1,5 @@
 <template>
-  <div class="showGoods">
+  <div class="goods">
     <GoodsItem v-for = "(item,index) of goodsList" :itemData='item.goods' class='goodsItem' :key='item.goods.id'>
 
     </GoodsItem>
@@ -18,26 +18,19 @@
         type:Array,
         default:[]
       }
+    },
+    updated() {
+      this.$emit('updated')
     }
   }
 </script>
 
 <style>
- .showGoods{
-    width: 100%;
+  .goods {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-  }
-  .goodsItem{
-    width: 46%;
-    height: 170px;
-    /* border: 1px solid red; */
-    box-shadow: 1px 1px 3px rgba(33,33,33,.5);
-    margin-bottom: 10px;
-    font-size: 14px;
-    color: var(--color-text);
-    text-align: center;
-    line-height: 20px;
+    justify-content: space-around;
+
+    padding: 2px;
   }
 </style>

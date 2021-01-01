@@ -12,16 +12,46 @@
     name: 'Scroll',
     data() {
       return {
-        scroll: null
+        scroll: null,
+        hooks:null
+      }
+    },
+    props:{
+      probe:{
+        type:Number,
+        default:0
+      },
+      pullUpLoad:{
+        type:Boolean,
+
+        default:false
       }
     },
     mounted() {
       this.scroll = new BScroll(this.$refs.scroll, {
         observeDOM: true,
-        click: true
+        click: true,
+        probeType:this.probe,
+        pullUpLoad:this.pullUpLoad
       })
+      this.hooks = this.scroll.hooks
       // this.scroll.refresh()
       // console.log(this.scroll);
+    },
+    methods:{
+      scrollTo(position){
+        this.scroll.scrollTo(position.x,position.y,position.time)
+        // console.log(this.scroll.hooks);
+      },
+      on(evtentName,callback){
+        this.scroll.on(evtentName,callback)
+      },
+      finishPullUp(){
+        this.scroll.finishPullUp()
+      },
+      refresh(){
+        this.scroll.refresh()
+      }
     }
   }
 </script>

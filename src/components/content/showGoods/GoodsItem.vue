@@ -1,11 +1,18 @@
 <template>
-  <div class="goodsItem">
-    <a>
-     <img :src="itemData.imgUrl" />
-      <h4>{{ itemData.title}}<br>
-      <span>{{itemData.price }}</span>
-      </h4>
-    </a>
+  <div class="goods-item">
+    <img :src="itemData.imgUrl" />
+   <div class="goods-info">
+      <p>{{ itemData.title}}</p>
+      <!-- <span>{{itemData.price }}</span> -->
+      <span class="price">{{itemData.price}}</span>
+      <!-- <span class="collect">{{goodsItem.cfav}}</span> -->
+    </div>
+<!--        <img :src="itemData.imgUrl" alt="">
+        <div class="goods-info">
+          <p>{{goodsItem.title}}</p>
+          <span class="price">{{goodsItem.price}}</span>
+          <span class="collect">{{goodsItem.cfav}}</span>
+        </div> -->
   </div>
 </template>
 
@@ -16,23 +23,57 @@
       itemData:Object
     },
     created() {
-      console.log(this.itemData);
+      // console.log(this.itemData);
     }
   }
 </script>
 
 <style>
-  .goodsItem img{
+  .goods-item {
+    padding-bottom: 40px;
+    position: relative;
+
+    width: 48%;
+  }
+
+  .goods-item img {
     width: 100%;
-
+    border-radius: 5px;
   }
-  .goodsItem a h4{
-    font-size: 14px;
-    color: var(--color-text);
+
+  .goods-info {
+    font-size: 12px;
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    overflow: hidden;
     text-align: center;
-
   }
-  .goodsItem a h4 span{
-    color: var(--color-tint);
+
+  .goods-info p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 3px;
+  }
+
+  .goods-info .price {
+    color: var(--color-high-text);
+    margin-right: 20px;
+  }
+
+  .goods-info .collect {
+    position: relative;
+  }
+
+  .goods-info .collect::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: -1px;
+    width: 14px;
+    height: 14px;
+    background: url("~assets/img/common/collect.svg") 0 0/14px 14px;
   }
 </style>
