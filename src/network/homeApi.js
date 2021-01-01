@@ -10,7 +10,12 @@ export function getHomeMultidata() {
 
   return instance(config)
 }
-
+export function getHomeData(qs){
+  const instance = http()
+  return instance({
+    url:`/home/data?${qs}`
+  })
+}
 
 export function getDemoData(qs){
   const instance = testHttp()

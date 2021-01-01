@@ -35,7 +35,7 @@
   <Swipe class="my-swipe" :autoplay="3000" indicator-color="white">
     <swipe-item v-for='(item,index) of banners' :key='index'>
       <a :href="item.link">
-        <img :src="item.image"></img>
+        <img :src="item.image" @load = 'handleOnload'></img>
       </a>
     </swipe-item>
   </Swipe>
@@ -55,6 +55,12 @@ import { Swipe, SwipeItem } from 'vant';
         default:[]
       }
     },
+    methods:{
+      handleOnload(){
+        this.$emit('imgOnload')
+      }
+    }
+    ,
   }
 </script>
 <style>

@@ -14,7 +14,8 @@
     data(){
       return{
         curIndex:0,
-        isActive:false
+        isActive:false,
+        offsetTop:null
       }
     },
     methods:{
@@ -23,6 +24,15 @@
         console.log(this.curIndex)
         this.$emit('tabClick',index)
       }
+    },
+    mounted() {
+      // this.offsetTop = this.$el.offsetTop
+      // this.$emit('tabControlMounted',this.offsetTop)
+      // console.log('tabControlMounted')
+    },
+    updated() {
+      // this.offsetTop = this.$el.offsetTop
+      // console.log(this.offsetTop)
     },
     props:{
       titles:{
@@ -38,10 +48,10 @@
     display: flex;
     justify-content: space-evenly;
     padding: 10px 0px;
-    position: sticky;
-    top: 44px;
+/*    position: sticky;
+    top: 44px; */
     background-color: #fff;
-        z-index: 9;
+    z-index: 9;
   }
   .active a{
     color: var(--color-tint);

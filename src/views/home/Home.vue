@@ -3,11 +3,13 @@
     <nav-bar class="home-nav">
       <div slot='center'>购物街</div>
     </nav-bar>
+    <tabControl :titles="tabControlTitle" @tabClick='handleTabClick' ref='tabControl_bt' v-show='isTabFixed'
+    class='tabControl-bt'></tabControl>
     <scroll class="scroll" ref='scroll' :probe='3' :pullUpLoad='true'>
-      <home-swaper :banners='banners'></home-swaper>
+      <home-swaper :banners='banners' @imgOnload='getTabControlOffset'></home-swaper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
-      <tabControl :titles="tabControlTitle" @tabClick='handleTabClick'></tabControl>
+      <tabControl :titles="tabControlTitle" @tabClick='handleTabClick' ref='tabControl'></tabControl>
       <ShowGoods :goodsList='goodsList' @updated='handleUpdated'></ShowGoods>
     </scroll>
     <BackTop @click.native='backTop' v-show='isShowBackTop'></BackTop>
@@ -29,7 +31,8 @@
   // 网络请求函数
   import {
     getHomeMultidata,
-    getDemoData
+    getDemoData,
+    getHomeData
   } from 'network/homeApi'
   export default {
     name: 'Home',
@@ -69,14 +72,21 @@
             page: 0,
             datalist: []
           }
-        }
+        },
+        tabControlOffsetTop:null,
+        isTabFixed:false,
+        TabPos:{
+          pop:0,
+          new:0,
+          sell:0,
+        },
       }
     },
     created() {
       this.getHomeMultidata()
-      this.getDemoData('pop')
-      this.getDemoData('new')
-      this.getDemoData('sell')
+      this.getHomeData('pop')
+      this.getHomeData('new')
+      this.getHomeData('sell')
     },
     mounted() {
       // this.$nextTick(function(){
@@ -100,8 +110,15 @@
             this.curTab = 'sell'
             break
         }
-        // console.log('handleTabClick'+index);
+        this.$refs.tabControl.curIndex = index
+        this.$refs.tabControl_bt.curIndex = index
+        this.$refs.scroll.scrollTo({
+          x: 0,
+          y: this.tabControlOffsetTop>-this.TabPos[this.curTab]?-this.tabControlOffsetTop:this.TabPos[this.curTab],
+          time: 0,
+        })
       },
+
       //返回顶部
       backTop() {
         this.$refs.scroll.scrollTo({
@@ -118,12 +135,15 @@
         } else {
           this.isShowBackTop = false
         }
-        // console.log(pos);
+        //处理tabControl的吸顶效果
+        this.isTabFixed = (-pos.y) > this.tabControlOffsetTop
+        //记录当前tab滚动的距离
+        this.TabPos[this.curTab] = pos.y
       },
       //上拉加载数据,数据加载完成结束下拉刷新
       pullingUp() {
         setTimeout(()=>{
-          this.getDemoData(this.curTab).then(()=>{
+          this.getHomeData(this.curTab).then(()=>{
             // this.$refs.scroll.hooks.on('refresh', () => {  })
 
             // console.log(this.goods[this.curTab].datalist);
@@ -136,21 +156,24 @@
       //内容更新回调刷新
       handleUpdated(){
         this.$refs.scroll.refresh()
-        console.log('刷新');
+        // console.log('刷新');
       }
-      ,
+      ,//图片加载完成获取tabControl的偏移
+      getTabControlOffset(){
+        this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop
+        console.log(this.$refs.tabControl.$el.offsetTop)
+      },
       //网络请求
-      getDemoData(type) {
+      getHomeData(type) {
         const qs = `type=${type}&page=${this.goods[type].page+1}`
         this.goods[type].page += 1
         // console.log(qs)
-        return getDemoData(qs).then(res => {
-          this.goods[type].datalist.push(...res.data)
-
+        return getHomeData(qs).then(res => {
+          this.goods[type].datalist.push(...res.data.data.list)
+          // console.log(res.data.data.list)
         })
       },
       getHomeMultidata() {
-
         getHomeMultidata().then(res => {
           this.banners = res.data.data.banner.list
           this.recommends = res.data.data.recommend.list
@@ -186,7 +209,10 @@
     top: 44px;
     bottom: 49px;
   }
-
+.tabControl-bt{
+  position: relative;
+  z-index: 100;
+}
   /* .bscroll-home{
   position: absolute;
   left: 0;
