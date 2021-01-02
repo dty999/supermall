@@ -35,7 +35,7 @@
   <Swipe class="my-swipe" :autoplay="3000" indicator-color="white">
     <swipe-item v-for='(item,index) of banners' :key='index'>
       <a :href="item.link">
-        <img :src="item.image" @load = 'handleOnload'></img>
+        <img :src="item.image" @load = 'handleOnload' />
       </a>
     </swipe-item>
   </Swipe>

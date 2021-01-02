@@ -8,3 +8,9 @@ export function getDetailData(iid) {
     url:'/detail/'+iid
   })
 }
+export function getRecommend(){
+  const instance = http()
+  return instance({
+    url:'/recommend'
+  })
+}

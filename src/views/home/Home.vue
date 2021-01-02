@@ -156,7 +156,7 @@
       //内容更新回调刷新
       handleUpdated(){
         this.$refs.scroll.refresh()
-        // console.log('刷新');
+        console.log('刷新');
       }
       ,//图片加载完成获取tabControl的偏移
       getTabControlOffset(){

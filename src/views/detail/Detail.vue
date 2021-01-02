@@ -2,7 +2,7 @@
   <div class="detail">
 
     <DetailNavBar class='navbar'></DetailNavBar>
-    <Scroll class='scroll' :probe='3' :click='false'>
+    <Scroll class='scroll' :probe='3' :click='true'>
       <DetailSwper :banners='swperImg'></DetailSwper>
       <GoodsBaseInfo :goods='goodsBaseInfo'></GoodsBaseInfo>
       <Shop></Shop>
@@ -13,7 +13,7 @@
       </ul>
       <Params />
       <PingLun />
-      
+      <ShowGoods :goodsList='goodsList'></ShowGoods>
     </Scroll>
 
   </div>
@@ -21,13 +21,15 @@
 
 <script>
   import {
-    getDetailData
+    getDetailData,
+    getRecommend
   } from 'network/detailApi.js'
   import {
     GoodsBaseInfoClass
   } from '../../network/dataStruct.js'
 
   import Scroll from '../../components/common/scroll/Scroll.vue'
+  import ShowGoods from '../../components/content/showGoods/ShowGoods.vue'
 
   import DetailNavBar from './child/DetailNavBar.vue'
   import DetailSwper from './child/DetailSwper'
@@ -45,7 +47,8 @@
         goodsData: null,
         swperImg: [],
         goodsBaseInfo: {},
-        imgList: []
+        imgList: [],
+        recommendList:[]
       }
     },
     components: {
@@ -55,7 +58,23 @@
       Shop,
       Scroll,
       Params,
-      PingLun
+      PingLun,
+      ShowGoods
+    },
+    computed:{
+      goodsList(){
+        return this.recommendList.map(item=>{
+          return {
+            title:item.title,
+            orgPrice:item.price,
+            cfav:item.cfav,
+            show:{
+              img:item.image
+            },
+            iid:item.item_id
+          }
+        })
+      }
     },
     created() {
       this.iid = this.$route.params.iid
@@ -68,10 +87,24 @@
         this.goodsBaseInfo = new GoodsBaseInfoClass(data.itemInfo, data.columns, data.shopInfo.services)
         this.imgList.push(...data.detailInfo.detailImage[0].list)
 
-        console.log(this.imgList);
+        // console.log(this.imgList);
       })
+      getRecommend().then((res)=>{
+        this.recommendList.push(...res.data.data.list)
+        // console.log(this.recommendList);
+      })
+      // watch :{
+      //   　'$route': function (to, from) {
+      //        //执行数据更新查询
+      // 　　this.changePage();
+      // 　　}
+      // }
     },
+    methods:{
+      handleShowGoodsClick(){
 
+      }
+    }
   }
 </script>
 

@@ -21,7 +21,10 @@
     },
     methods:{
       handleClick(){
-        this.$router.push('/detail/'+this.itemData.iid)
+
+        // this.$router.push('/null')
+                this.$router.push('/detail/'+this.itemData.iid)
+
       }
     }
   }

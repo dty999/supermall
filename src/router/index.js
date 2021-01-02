@@ -6,6 +6,7 @@ const FenLei = ()=>import('views/fenlei/FenLei')
 const GouWuChe = ()=>import('views/gouwuche/GouWuChe')
 const Profile = ()=>import('views/dangan/Profile')
 const Detail = ()=>import('views/detail/Detail')
+const Null = ()=>import('components/common/nullpage/Null')
 Vue.use(VueRouter)
 
 const routes = [
@@ -39,6 +40,11 @@ const routes = [
         component:Detail
       }
       ,
+      {
+        path:'/null',
+        name:'Null',
+        component:Null
+      }
 ]
 
 const router = new VueRouter({
