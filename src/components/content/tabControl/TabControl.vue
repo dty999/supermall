@@ -21,7 +21,7 @@
     methods:{
       handClick(index){
         this.curIndex = index
-        console.log(this.curIndex)
+        // console.log(this.curIndex)
         this.$emit('tabClick',index)
       }
     },
@@ -52,6 +52,7 @@
     top: 44px; */
     background-color: #fff;
     z-index: 9;
+    box-sizing: border-box;
   }
   .active a{
     color: var(--color-tint);

@@ -5,7 +5,7 @@ const Home = ()=>import('views/home/Home')
 const FenLei = ()=>import('views/fenlei/FenLei')
 const GouWuChe = ()=>import('views/gouwuche/GouWuChe')
 const Profile = ()=>import('views/dangan/Profile')
-
+const Detail = ()=>import('views/detail/Detail')
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,6 +33,12 @@ const routes = [
 				name: 'Profile',
 				component: Profile
 			},
+      {
+        path:'/detail/:iid',
+        name:'Detail',
+        component:Detail
+      }
+      ,
 ]
 
 const router = new VueRouter({

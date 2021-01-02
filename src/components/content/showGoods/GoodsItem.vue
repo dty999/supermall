@@ -1,18 +1,12 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="handleClick">
     <img :src="itemData.show.img" />
    <div class="goods-info">
       <p>{{ itemData.title}}</p>
-      <!-- <span>{{itemData.price }}</span> -->
       <span class="price">{{itemData.orgPrice}}</span>
-      <!-- <span class="collect">{{goodsItem.cfav}}</span> -->
+      <span class="collect">{{itemData.cfav}}</span>
     </div>
-<!--        <img :src="itemData.imgUrl" alt="">
-        <div class="goods-info">
-          <p>{{goodsItem.title}}</p>
-          <span class="price">{{goodsItem.price}}</span>
-          <span class="collect">{{goodsItem.cfav}}</span>
-        </div> -->
+
   </div>
 </template>
 
@@ -24,6 +18,11 @@
     },
     created() {
       // console.log(this.itemData);
+    },
+    methods:{
+      handleClick(){
+        this.$router.push('/detail/'+this.itemData.iid)
+      }
     }
   }
 </script>

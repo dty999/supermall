@@ -25,12 +25,13 @@
         type:Boolean,
 
         default:false
-      }
+      },
+      click:true
     },
     mounted() {
       this.scroll = new BScroll(this.$refs.scroll, {
         observeDOM: true,
-        click: true,
+        click: this.click,
         probeType:this.probe,
         pullUpLoad:this.pullUpLoad
       })

@@ -5,7 +5,7 @@
     </nav-bar>
     <tabControl :titles="tabControlTitle" @tabClick='handleTabClick' ref='tabControl_bt' v-show='isTabFixed'
     class='tabControl-bt'></tabControl>
-    <scroll class="scroll" ref='scroll' :probe='3' :pullUpLoad='true'>
+    <scroll class="scroll" ref='scroll' :probe='3' :pullUpLoad='true' :click='true'>
       <home-swaper :banners='banners' @imgOnload='getTabControlOffset'></home-swaper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
