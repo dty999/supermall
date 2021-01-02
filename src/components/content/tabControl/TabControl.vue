@@ -1,8 +1,7 @@
 <template>
   <div class="tabControl">
 
-    <div v-for="(title,index) of titles" @click="handClick(index)"
-    :class="{active:index === curIndex}">
+    <div v-for="(title,index) of titles" @click="handClick(index)" :class="{active:index === curIndex}" :key='index'>
       <a >{{title}}</a>
     </div>
   </div>
