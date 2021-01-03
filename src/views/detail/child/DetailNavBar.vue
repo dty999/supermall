@@ -2,7 +2,7 @@
   <div class="detail_navbar">
     <NavBar>
       <div slot='center'>
-        <TabControl :titles='titles' class='tab_control' @tabClick='handleTabClick'></TabControl>
+        <TabControl :titles='titles' class='tab_control'></TabControl>
       </div>
       <div slot='left' class="left" @click="handleBackClick">
         <img src="~assets/img/common/back.svg" alt="">
@@ -32,9 +32,9 @@
       handleBackClick(){
         this.$router.go(-1)
       },
-      handleTabClick(index){
-        console.log(index);
-      }
+      // handleTabClick(index){
+      //   console.log(index);
+      // }
     }
   }
 </script>
@@ -47,6 +47,6 @@
     padding-top:  7px;
   }
   .detail_navbar{
-    
+
   }
 </style>

@@ -3,8 +3,7 @@
     <nav-bar class="home-nav">
       <div slot='center'>购物街</div>
     </nav-bar>
-    <tabControl :titles="tabControlTitle" @tabClick='handleTabClick' ref='tabControl_bt' v-show='isTabFixed'
-    class='tabControl-bt'></tabControl>
+    <tabControl :titles="tabControlTitle" @tabClick='handleTabClick' ref='tabControl_bt' v-show='isTabFixed' class='tabControl-bt'></tabControl>
     <scroll class="scroll" ref='scroll' :probe='3' :pullUpLoad='true' :click='true'>
       <home-swaper :banners='banners' @imgOnload='getTabControlOffset'></home-swaper>
       <recommend-view :recommends="recommends"></recommend-view>
@@ -73,12 +72,12 @@
             datalist: []
           }
         },
-        tabControlOffsetTop:null,
-        isTabFixed:false,
-        TabPos:{
-          pop:0,
-          new:0,
-          sell:0,
+        tabControlOffsetTop: null,
+        isTabFixed: false,
+        TabPos: {
+          pop: 0,
+          new: 0,
+          sell: 0,
         },
       }
     },
@@ -114,7 +113,7 @@
         this.$refs.tabControl_bt.curIndex = index
         this.$refs.scroll.scrollTo({
           x: 0,
-          y: this.tabControlOffsetTop>-this.TabPos[this.curTab]?-this.tabControlOffsetTop:this.TabPos[this.curTab],
+          y: this.tabControlOffsetTop > -this.TabPos[this.curTab] ? -this.tabControlOffsetTop : this.TabPos[this.curTab],
           time: 0,
         })
       },
@@ -142,24 +141,23 @@
       },
       //上拉加载数据,数据加载完成结束下拉刷新
       pullingUp() {
-        setTimeout(()=>{
-          this.getHomeData(this.curTab).then(()=>{
+        setTimeout(() => {
+          this.getHomeData(this.curTab).then(() => {
             // this.$refs.scroll.hooks.on('refresh', () => {  })
 
             // console.log(this.goods[this.curTab].datalist);
             this.$refs.scroll.finishPullUp()
           })
-        },1000)
+        }, 1000)
 
         console.log('上拉加载更多');
       },
       //内容更新回调刷新
-      handleUpdated(){
+      handleUpdated() {
         this.$refs.scroll.refresh()
         console.log('刷新');
-      }
-      ,//图片加载完成获取tabControl的偏移
-      getTabControlOffset(){
+      }, //图片加载完成获取tabControl的偏移
+      getTabControlOffset() {
         this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop
         console.log(this.$refs.tabControl.$el.offsetTop)
       },
@@ -209,14 +207,9 @@
     top: 44px;
     bottom: 49px;
   }
-.tabControl-bt{
-  position: relative;
-  z-index: 100;
-}
-  /* .bscroll-home{
-  position: absolute;
-  left: 0;
-  top: 0;
-  overflow: hidden;
-} */
+
+  .tabControl-bt {
+    position: relative;
+    z-index: 100;
+  }
 </style>

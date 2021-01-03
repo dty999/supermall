@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  import {bus} from '../../../common/utils.js'
   export default {
     name:'TabControl',
     data(){
@@ -22,12 +23,18 @@
         this.curIndex = index
         // console.log(this.curIndex)
         this.$emit('tabClick',index)
+        bus.$emit('tabClickInBus',index)
+
+      },
+      changeTab(index){
+        this.curIndex = index
       }
     },
     mounted() {
       // this.offsetTop = this.$el.offsetTop
       // this.$emit('tabControlMounted',this.offsetTop)
       // console.log('tabControlMounted')
+      bus.$on('changeTab',this.changeTab)
     },
     updated() {
       // this.offsetTop = this.$el.offsetTop

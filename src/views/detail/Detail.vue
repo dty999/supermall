@@ -2,8 +2,8 @@
   <div class="detail">
 
     <DetailNavBar class='navbar'></DetailNavBar>
-    <Scroll class='scroll' :probe='3' :click='true'>
-      <DetailSwper :banners='swperImg'></DetailSwper>
+    <Scroll :click='true' :probe='3' class='scroll' ref='scroll'>
+      <DetailSwper :banners='swperImg' ref='shangpin'></DetailSwper>
       <GoodsBaseInfo :goods='goodsBaseInfo'></GoodsBaseInfo>
       <Shop></Shop>
       <ul>
@@ -11,10 +11,11 @@
           <img :src="imgUrl" class="detailImg" />
         </li>
       </ul>
-      <Params />
-      <PingLun />
-      <ShowGoods :goodsList='goodsList'></ShowGoods>
+      <Params ref='canshu' />
+      <PingLun :commentInfo='commentInfo' ref='pinglun' />
+      <ShowGoods :goodsList='goodsList' ref='tuijian'></ShowGoods>
     </Scroll>
+    <ToolBar class='toolBar' :goodsId='iid'></ToolBar>
 
   </div>
 </template>
@@ -28,6 +29,11 @@
     GoodsBaseInfoClass
   } from '../../network/dataStruct.js'
 
+
+  import {
+    bus,debounce
+  } from '../../common/utils.js'
+
   import Scroll from '../../components/common/scroll/Scroll.vue'
   import ShowGoods from '../../components/content/showGoods/ShowGoods.vue'
 
@@ -37,6 +43,7 @@
   import Shop from './child/Shop.vue'
   import Params from './child/Params.vue'
   import PingLun from './child/PingLun.vue'
+  import ToolBar from './child/ToolBar.vue'
 
 
   export default {
@@ -48,7 +55,10 @@
         swperImg: [],
         goodsBaseInfo: {},
         imgList: [],
-        recommendList:[]
+        recommendList: [],
+        commentInfo: [],
+        offset: [],
+        enterTime:null
       }
     },
     components: {
@@ -59,19 +69,20 @@
       Scroll,
       Params,
       PingLun,
-      ShowGoods
+      ShowGoods,
+      ToolBar
     },
-    computed:{
-      goodsList(){
-        return this.recommendList.map(item=>{
+    computed: {
+      goodsList() {
+        return this.recommendList.map(item => {
           return {
-            title:item.title,
-            orgPrice:item.price,
-            cfav:item.cfav,
-            show:{
-              img:item.image
+            title: item.title,
+            orgPrice: item.price,
+            cfav: item.cfav,
+            show: {
+              img: item.image
             },
-            iid:item.item_id
+            iid: item.item_id
           }
         })
       }
@@ -86,26 +97,79 @@
         this.swperImg.push(...this.goodsData.itemInfo.topImages)
         this.goodsBaseInfo = new GoodsBaseInfoClass(data.itemInfo, data.columns, data.shopInfo.services)
         this.imgList.push(...data.detailInfo.detailImage[0].list)
-
-        // console.log(this.imgList);
+        this.commentInfo.push(...data.rate.list)
+        // console.log(this.commentInfo);
       })
-      getRecommend().then((res)=>{
+      getRecommend().then((res) => {
         this.recommendList.push(...res.data.data.list)
         // console.log(this.recommendList);
       })
-      // watch :{
-      //   　'$route': function (to, from) {
-      //        //执行数据更新查询
-      // 　　this.changePage();
-      // 　　}
-      // }
-    },
-    methods:{
-      handleShowGoodsClick(){
 
+      bus.$on('tabClickInBus', this.handle)
+      this.enterTime = new Date()
+
+
+    },
+    mounted() {
+      console.log('mounted');
+      this.$refs['scroll'].on('scroll',this.onScroll)
+        // this.offset = []
+        // this.offset.push(0)
+        // this.offset.push(-1*this.$refs['canshu'].$el.offsetTop)
+        // this.offset.push(-1*this.$refs['pinglun'].$el.offsetTop)
+        // this.offset.push(-1*this.$refs['tuijian'].$el.offsetTop)
+    },
+
+
+    destroyed() {
+      bus.$off('tabClickInBus', this.handle)
+    },
+
+
+    methods: {
+      handleShowGoodsClick() {
+
+      },
+      handle(index) {
+        this.getoffset()
+        console.log(this.offset[index]);
+        this.$refs['scroll'].scrollTo({x:0,y:this.offset[index],time:1000})
+
+      },
+      onScroll(pos){
+        // console.log('scroll');
+        // debounce(this.getoffset,50)()
+        const curTime = new Date()
+        if(curTime.getTime() - this.enterTime.getTime() < 6000){
+          this.getoffset()
+          console.log('xxxxx');
+        }
+
+        let y = - pos.y
+        if(y >=-this.offset[1] && y <-this.offset[2]){
+          bus.$emit('changeTab',1)
+        }
+        if(y >=-this.offset[2] && y <-this.offset[3]){
+           bus.$emit('changeTab',2)
+        }
+        if(y >=-this.offset[3]){
+           bus.$emit('changeTab',3)
+        }
+        if(y <-this.offset[1]){
+           bus.$emit('changeTab',0)
+        }
+
+      },
+      getoffset(){
+        this.offset = []
+        this.offset.push(0)
+        this.offset.push(-1*this.$refs['canshu'].$el.offsetTop)
+        this.offset.push(-1*this.$refs['pinglun'].$el.offsetTop)
+        this.offset.push(-1*this.$refs['tuijian'].$el.offsetTop)
+        // console.log('getoffset');
       }
-    }
-  }
+    },
+  };
 </script>
 
 <style scoped="">
@@ -126,7 +190,7 @@
   }
 
   .scroll {
-    height: calc(100% - 44px);
+    height: calc(100% - 88px);
     overflow: hidden;
     /*    position: absolute;
     width: 100%;
@@ -138,4 +202,9 @@
   .detailImg {
     width: 100%;
   }
+  .toolBar{
+/*    position: relative;
+    z-index: 102; */
+  }
+
 </style>
