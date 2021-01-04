@@ -71,6 +71,6 @@ import { Swipe, SwipeItem } from 'vant';
 }
 .my-swipe img{
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 </style>

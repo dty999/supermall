@@ -15,8 +15,8 @@
       <PingLun :commentInfo='commentInfo' ref='pinglun' />
       <ShowGoods :goodsList='goodsList' ref='tuijian'></ShowGoods>
     </Scroll>
-    <ToolBar class='toolBar' :goodsId='iid'></ToolBar>
-
+    <ToolBar class='toolBar' :goodsId='iid' @click.native = 'addShouCang'></ToolBar>
+    <!-- <BackTop @click.native='backTop' v-show='isShowBackTop'></BackTop> -->
   </div>
 </template>
 
@@ -34,6 +34,10 @@
     bus,debounce
   } from '../../common/utils.js'
 
+  import { mapActions } from 'vuex'
+
+  // import {backTopMixin} from '../../common/mixin.js'
+
   import Scroll from '../../components/common/scroll/Scroll.vue'
   import ShowGoods from '../../components/content/showGoods/ShowGoods.vue'
 
@@ -48,6 +52,7 @@
 
   export default {
     name: 'Detail',
+    // mixins:[],
     data() {
       return {
         iid: null,
@@ -70,7 +75,8 @@
       Params,
       PingLun,
       ShowGoods,
-      ToolBar
+      ToolBar,
+      // BackTop
     },
     computed: {
       goodsList() {
@@ -142,7 +148,7 @@
         const curTime = new Date()
         if(curTime.getTime() - this.enterTime.getTime() < 6000){
           this.getoffset()
-          console.log('xxxxx');
+          // console.log('xxxxx');
         }
 
         let y = - pos.y
@@ -159,6 +165,7 @@
            bus.$emit('changeTab',0)
         }
 
+        // this.listenBackTop(pos)
       },
       getoffset(){
         this.offset = []
@@ -167,7 +174,17 @@
         this.offset.push(-1*this.$refs['pinglun'].$el.offsetTop)
         this.offset.push(-1*this.$refs['tuijian'].$el.offsetTop)
         // console.log('getoffset');
-      }
+      },
+      addShouCang(){
+        // console.log('收藏');
+        const product = {}
+        product.img = this.swperImg[0]
+        product.title = this.goodsBaseInfo.title
+        product.realPrice = this.goodsBaseInfo.realPrice
+        product.iid = this.iid
+        this.$store.dispatch('addProduct',product)
+        // console.log(this.$store.state.cartList.length);
+      },
     },
   };
 </script>

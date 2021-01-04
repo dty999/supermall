@@ -1,6 +1,6 @@
 <template>
   <div class="toolBar">
-    <img src="~assets/img/detail/cart.png"  @click="shouCang"/>
+    <img src="~assets/img/detail/cart.png" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@
     },
     methods:{
       shouCang(){
-        console.log(this.goodsId);
+        // this.$emit('add')
       }
     }
   }
